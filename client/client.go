@@ -1,6 +1,8 @@
 package client
 
 import (
+	"bufio"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net"
@@ -8,6 +10,7 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/jkuri/bore/server"
 	"golang.org/x/crypto/ssh"
 )
 
@@ -20,6 +23,7 @@ type BoreClient struct {
 	ServerEndpoint endpoint // remote SSH server
 	RemoteEndpoint endpoint // remote forwarding port (on remote SSH server network)
 	id             string
+	RemoteData     server.Data
 }
 
 type idRequestPayload struct {
@@ -109,6 +113,17 @@ func (c *BoreClient) writeStdout() error {
 	}
 
 	go func() {
+		s := bufio.NewScanner(stdout)
+		s.Scan()
+		text := s.Text()
+		err = json.Unmarshal([]byte(text), &c.RemoteData)
+		if err != nil {
+			os.Stdout.WriteString(text + "\n")
+		} else {
+			os.Stdout.WriteString("Generated HTTP URL:  " + c.RemoteData.HTTPurl + "\n")
+			os.Stdout.WriteString("Generated HTTPS URL: " + c.RemoteData.HTTPSurl + "\n")
+			os.Stdout.WriteString("Direct TCP:          " + c.RemoteData.DirectTCP + "\n")
+		}
 		defer session.Close()
 		io.Copy(os.Stdout, stdout)
 	}()
