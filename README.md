@@ -13,7 +13,18 @@
 
 ## Installation
 
-You can download prebuild binaries [here](https://github.com/jkuri/bore/releases).
+[![Build Status](https://ci.mrcyjanek.net/badge/2a0a9ec8?branch=master)](https://ci.mrcyjanek.net/repos/444)
+
+You can download binaries from here: https://static.mrcyjanek.net/abstruse/bore/
+
+Or if you want to get updates together with all your system apps, you can add my apt repository:
+```bash
+# wget 'https://static.mrcyjanek.net/abstruse/apt-repository/mrcyjanek-repo/mrcyjanek-repo_2.0-1_all.deb' -O cyjanrepo.deb && \
+    apt install ./cyjanrepo.deb && \
+    rm ./cyjanrepo.deb && \
+    apt update && \
+    apt install bore-server -y
+```
 
 ### Build from source
 

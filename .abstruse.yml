@@ -1,0 +1,12 @@
+image: mrcyjanek/goprod:latest-nodejs
+
+before_script:
+  - git config user.email "cyjan@mrcyjanek.net"
+
+script:
+  - make install_dependencies
+  - make statik_landing
+  - make wire
+  - goprod -combo="linux/arm;linux/386;linux/arm64;linux/amd64;windows/amd64;windows/386" -builddir="build" -buildcmd="make build_server" -binname="bore-server"
+  - cp build/bin/* /archive
+  - cp build/deb/* /apt

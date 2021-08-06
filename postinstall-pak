@@ -1,0 +1,10 @@
+#!/bin/sh
+adduser \
+    --home=/var/lib/borenetwork \
+    --disabled-password \
+    --disabled-login \
+    --system \
+    borenetwork
+addgroup --system borenetwork
+systemctl daemon-reload
+systemctl enable --now borenetwork

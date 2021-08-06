@@ -1,0 +1,29 @@
+[Unit]
+Description=BoreNetwork Daemon
+After=network.target
+[Service]
+ExecStart=/usr/bin/bore-server
+# Make sure the config directory is readable by the service user
+PermissionsStartOnly=true
+####################
+Type=simple
+Restart=on-failure
+# Directory creation and permissions
+####################################
+User=borenetwork
+Group=borenetwork
+RuntimeDirectory=borenetwork
+RuntimeDirectoryMode=0770
+# /var/lib/borenetwork
+Environment="HOME=/var/lib/borenetwork"
+StateDirectory=borenetwork
+StateDirectoryMode=0770
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+NoNewPrivileges=true
+PrivateDevices=true
+MemoryDenyWriteExecute=true
+
+[Install]
+WantedBy=multi-user.target

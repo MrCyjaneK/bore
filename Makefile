@@ -9,8 +9,12 @@ OSARCH="!darwin/arm !windows/arm"
 
 build: statik_landing wire build_server build_client
 
+install:
+	cp build/bin/${BINNAME}_${GOOS}_${GOARCH} /usr/bin/bore-server
+	cp borenetwork.service /etc/systemd/system/borenetwork.service
+
 build_server:
-	@CGO_ENABLED=0 go build -ldflags "-X ${VERSION_PATH}.GitCommit=${GIT_COMMIT} -X ${VERSION_PATH}.UIVersion=${UI_VERSION} -X ${VERSION_PATH}.BuildDate=${BUILD_DATE}" -o ./build/bore-server ./cmd/bore-server
+	go build -ldflags "-X ${VERSION_PATH}.GitCommit=${GIT_COMMIT} -X ${VERSION_PATH}.UIVersion=${UI_VERSION} -X ${VERSION_PATH}.BuildDate=${BUILD_DATE}" -o ./build/bin/${BINNAME}_${GOOS}_${GOARCH} ./cmd/bore-server
 
 build_client:
 	@CGO_ENABLED=0 go build -ldflags "-X ${VERSION_PATH}.GitCommit=${GIT_COMMIT} -X ${VERSION_PATH}.UIVersion=${UI_VERSION} -X ${VERSION_PATH}.BuildDate=${BUILD_DATE}" -o ./build/bore ./cmd/bore
