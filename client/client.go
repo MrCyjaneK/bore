@@ -10,7 +10,6 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/jkuri/bore/server"
 	"golang.org/x/crypto/ssh"
 )
 
@@ -23,11 +22,17 @@ type BoreClient struct {
 	ServerEndpoint endpoint // remote SSH server
 	RemoteEndpoint endpoint // remote forwarding port (on remote SSH server network)
 	id             string
-	RemoteData     server.Data
+	RemoteData     Data
 }
 
 type idRequestPayload struct {
 	ID string
+}
+
+type Data struct {
+	HTTPurl   string `json:"httpurl"`
+	HTTPSurl  string `json:"httpsurl"`
+	DirectTCP string `json:"directtcp"`
 }
 
 // NewBoreClient returns new instance of BoreClient.

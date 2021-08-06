@@ -10,6 +10,7 @@ import (
 	"sync"
 	"time"
 
+	c "github.com/jkuri/bore/client"
 	"go.uber.org/zap"
 	"golang.org/x/crypto/ssh"
 )
@@ -18,12 +19,6 @@ const (
 	minPort = 55000
 	maxPort = 65000
 )
-
-type Data struct {
-	HTTPurl   string `json:"httpurl"`
-	HTTPSurl  string `json:"httpsurl"`
-	DirectTCP string `json:"directtcp"`
-}
 
 // SSHServer defines SSH server instance.
 type SSHServer struct {
@@ -217,7 +212,7 @@ func (s *SSHServer) handleRequests(client *client, reqs <-chan *ssh.Request) {
 			client.addr = bindInfo.Addr
 			client.port = bindInfo.Port
 
-			var data Data
+			var data c.Data
 
 			data.HTTPurl = fmt.Sprintf("http://%s.%s", client.id, s.domain)
 			data.HTTPSurl = fmt.Sprintf("https://%s.%s", client.id, s.domain)
